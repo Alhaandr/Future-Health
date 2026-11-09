@@ -1846,11 +1846,28 @@ function renderContinuityDashboardTab() {
 // -----------------------------------------------------------------------------
 // TAB 7: MURSHID AI ASSISTANT (Enabling Technology, Not The Gimmick)
 // -----------------------------------------------------------------------------
+function formatChatMessage(text) {
+  if (!text) return '';
+  if (typeof text === 'object') {
+    text = text[state.currentLang] || '';
+  }
+  return text
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/\n\n/g, '<br><br>')
+    .replace(/\n• /g, '<br>• ')
+    .replace(/\n- /g, '<br>• ')
+    .replace(/\n(\d+)\. /g, '<br>$1. ');
+}
+
 function renderMurshidTab() {
   const isAr = state.currentLang === 'ar';
   return `
     <div class="sanad-card">
-      <h2 style="font-size:20px; font-weight:800; color:var(--primary-900); margin-bottom:4px;">${t('murshidTitle')}</h2>
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:6px;">
+        <h2 style="font-size:20px; font-weight:800; color:var(--primary-900);">${t('murshidTitle')}</h2>
+        <span class="doh-verified-pill">✨ Powered by Google Gemini 3.8 Flash & Stepped-Care Engine</span>
+      </div>
       <p style="color:var(--neutral-500); font-size:13px; margin-bottom:16px;">${t('murshidSub')}</p>
 
       <div class="murshid-chat-container">
@@ -1859,18 +1876,35 @@ function renderMurshidTab() {
             <div class="murshid-avatar">م</div>
             <div>
               <div style="font-weight:700; font-size:14px; color:var(--primary-900);">Murshid (مُرشِد)</div>
-              <div style="font-size:11px; color:var(--neutral-500);">Closed-Loop Navigation Assistant • Zero Diagnosis Mode</div>
+              <div style="font-size:11px; color:var(--neutral-500);">${isAr ? 'مرشد الملاحة السريرية الذكي • وضع عدم التشخيص المعتمد' : 'Clinical Navigation AI • Bounded Non-Diagnostic Mode'}</div>
             </div>
           </div>
           <span class="privacy-badge">🔒 End-to-End Local</span>
         </div>
 
         <div class="murshid-messages-area" id="murshid-messages-area">
-          ${state.chatMessages.map(msg => `
-            <div class="chat-bubble ${msg.sender}">
-              ${typeof msg.text === 'object' ? msg.text[state.currentLang] : msg.text}
-            </div>
-          `).join('')}
+          ${state.chatMessages.map(msg => {
+            if (msg.sender === 'bot-loading') {
+              return `
+                <div class="murshid-typing-indicator">
+                  <div class="typing-dot"></div>
+                  <div class="typing-dot"></div>
+                  <div class="typing-dot"></div>
+                  <span style="margin-inline-start:4px;">${isAr ? 'مُرشِد يُفكر...' : 'Murshid is generating guidance...'}</span>
+                </div>
+              `;
+            }
+            return `
+              <div class="chat-bubble ${msg.sender}">
+                <div>${formatChatMessage(msg.text)}</div>
+                ${msg.modelUsed ? `
+                  <div class="murshid-model-badge">
+                    <span>✨</span> <span>${msg.modelUsed}</span>
+                  </div>
+                ` : ''}
+              </div>
+            `;
+          }).join('')}
         </div>
 
         <div class="murshid-quick-prompts">
@@ -1903,10 +1937,17 @@ async function sendChatMessage() {
 
   const userQuery = input.value.trim();
   state.chatMessages.push({ sender: 'user', text: userQuery });
+  state.chatMessages.push({ sender: 'bot-loading', text: '' });
   input.value = '';
   renderTabContent();
 
-  // Try live Backend API
+  const scrollChat = () => {
+    const area = document.getElementById('murshid-messages-area');
+    if (area) area.scrollTop = area.scrollHeight;
+  };
+  scrollChat();
+
+  // Try live Backend API with Gemini / Clinical Engine
   try {
     const res = await fetch('/api/v1/murshid/chat', {
       method: 'POST',
@@ -1914,27 +1955,39 @@ async function sendChatMessage() {
       body: JSON.stringify({ message: userQuery, language: state.currentLang })
     });
 
+    // Remove loading indicator
+    state.chatMessages = state.chatMessages.filter(m => m.sender !== 'bot-loading');
+
     if (res.ok) {
       const data = await res.json();
       if (data.isCrisisTriggered) {
         openCrisisModal();
       }
-      state.chatMessages.push({ sender: 'bot', text: data.reply });
+      state.chatMessages.push({
+        sender: 'bot',
+        text: data.reply,
+        modelUsed: data.modelUsed
+      });
+      playCalmChime(528, 0.8);
       renderTabContent();
+      scrollChat();
       return;
     }
-  } catch(e) {}
+  } catch(e) {
+    console.warn('[Murshid AI] Server chat call failed, falling back:', e);
+  }
 
-  // Fallback local response
-  setTimeout(() => {
-    state.chatMessages.push({
-      sender: 'bot',
-      text: state.currentLang === 'ar'
-        ? "أنا هنا لمساعدتك على استكشاف الملاحة الذكية وحجز المواعيد المعتمدة عبر بطاقات ثقة وضمان."
-        : "I am here to guide your navigation: showing verified clinic options and closed-loop care connection in Abu Dhabi."
-    });
-    renderTabContent();
-  }, 400);
+  // Remove loading indicator and fallback
+  state.chatMessages = state.chatMessages.filter(m => m.sender !== 'bot-loading');
+  state.chatMessages.push({
+    sender: 'bot',
+    text: state.currentLang === 'ar'
+      ? "أنا هنا لمساعدتك على استكشاف الملاحة الذكية، ومعرفة كلفة عيادات صحة وكليفلاند كلينك، وحجز المواعيد المعتمدة عبر بطاقات ثقة وضمان."
+      : "I am here to guide your navigation: showing verified clinic options, transparent Thiqa/Daman coverage, and closed-loop care connection in Abu Dhabi.",
+    modelUsed: "SANAD Client Fallback"
+  });
+  renderTabContent();
+  scrollChat();
 }
 
 // -----------------------------------------------------------------------------
