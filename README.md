@@ -72,23 +72,50 @@ Conventional digital mental health applications fail at a predictable point: the
 
 ## 💻 Full-Stack Architecture & Running the Project
 
-### Architecture Layers:
-* **Presentation Layer (Frontend):** Responsive, WCAG 2.2 AAA compliant, bilingual (Arabic RTL & English LTR) single-page app with Web Audio API chime synthesis and Quick Exit privacy shield.
-* **REST API Gateway (Backend):** High-performance Node.js service running on `http://localhost:3000/api/v1/`:
-  * `/assessments/evaluate`: Evaluates psychometrics and initiates Closed-Loop state.
-  * `/navigator/services`: Smart Navigator with verified costs, wait times, and insurance eligibility.
-  * `/appointments/book`: Anonymous token generator.
-  * `/vault/consent`: Mitz-aligned granular consent register.
-  * `/dashboard/continuity`: Live cohort analytics and conversion funnel.
-  * `/crisis/escalate`: Estijaba 800 1717 emergency escalation.
-* **Interoperability Bridge:** HL7 FHIR R4 schema for Malaffi Health Information Exchange (`fhir_malaffi_integration.json`).
+### Decoupled Folder Structure:
+```
+Future Health/
+├── frontend/                     # Decoupled Presentation Layer
+│   ├── index.html                # Semantic HTML5, ARIA landmarks, Quick Exit bar
+│   ├── styles.css                # "Oasis Sanctuary" MedTech design system (LTR/RTL)
+│   └── app.js                    # Reactive client controller, SVG sparklines, CBT Reframer
+├── backend/                      # Decoupled Services & REST API Layer
+│   ├── server.js                 # Master HTTP server, static file router & API gateway
+│   ├── aiGuideService.js         # Murshid AI Engine (Google Gemini 3.8 Flash & Clinical Fallback)
+│   ├── assessmentService.js      # Psychometrics (PHQ-9, GAD-7, WHO-5) & Item 9 Intercept
+│   ├── closedLoopService.js      # 6-Stage Closed-Loop lifecycle engine & RCI tracking
+│   ├── smartNavigatorService.js  # DoH verified fee schedules, wait times & eligibility
+│   ├── steppedCareService.js     # 5-Tier stepped care triage & appointment booking
+│   ├── privacyVault.js           # Mitz granular consent register & employer lockout
+│   ├── continuityDashboardService.js # 6 Closed-loop conversion metrics & population stats
+│   └── crisisService.js          # Estijaba 800 1717 / 999 escalation & audit ledger
+├── server.js                     # Root launcher delegating to backend/server.js
+├── test_suite.js                 # Automated 33-test clinical & API verification suite
+├── .env.example                  # Environment configuration template (Gemini API key)
+└── fhir_malaffi_integration.json # HL7 FHIR R4 schema for Malaffi HIE exchange
+```
+
+### Murshid AI Navigation Engine:
+* **Primary Model:** **Google Gemini 3.8 Flash** (`gemini-3.8-flash`) via the Gemini API, providing fast, empathetic, context-aware stepped-care navigation.
+* **Clinical Safety Intercept:** Hardened deterministic keyword and pattern matching that routes suicidal ideation or self-harm immediately to **Estijaba 800 1717** and **Ambulance 999**.
+* **Clinical Reasoning Fallback:** If no external API key is configured or network is offline, the system automatically uses the **SANAD Clinical Reasoning Engine v2.4**, ensuring uninterrupted, accurate stepped-care guidance.
 
 ### To Run the Application:
 ```powershell
 cd "c:\Users\SOOQ ELASER\Documents\Future Health"
+
+# Optional: set Gemini API Key in .env or environment
+# $env:GEMINI_API_KEY="your-api-key"
+
 node server.js
 ```
-* Access the app in your browser at: **[http://localhost:3000](http://localhost:3000)**
+* **Frontend Application:** **[http://localhost:3000](http://localhost:3000)** (served from `/frontend`)
+* **REST API Gateway:** **[http://localhost:3000/api/v1/](http://localhost:3000/api/v1/)**
+
+### To Run the Test Suite (33/33 Tests):
+```powershell
+node test_suite.js
+```
 
 ---
 *SANAD Abu Dhabi – Multidisciplinary Digital Health Working Group.*
