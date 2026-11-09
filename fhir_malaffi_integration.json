@@ -1,0 +1,198 @@
+{
+  "$schema": "http://hl7.org/fhir/R4/fhir.schema.json",
+  "title": "SANAD Abu Dhabi - Malaffi Health Information Exchange (HIE) FHIR R4 Integration Bundle",
+  "description": "Standardized HL7 FHIR R4 resources implementing consent-governed exchange between SANAD and Abu Dhabi's Malaffi HIE in compliance with UAE Federal Law No. 2 of 2019.",
+  "bundleType": "transaction",
+  "resources": [
+    {
+      "resourceType": "Consent",
+      "id": "sanad-consent-malaffi-001",
+      "status": "active",
+      "scope": {
+        "coding": [
+          {
+            "system": "http://terminology.hl7.org/CodeSystem/consentscope",
+            "code": "patient-privacy",
+            "display": "Privacy Consent"
+          }
+        ]
+      },
+      "category": [
+        {
+          "coding": [
+            {
+              "system": "http://doh.gov.ae/standards/consent-categories",
+              "code": "mental-wellbeing-exchange",
+              "display": "Mental Wellbeing Stepped Care Exchange"
+            }
+          ]
+        }
+      ],
+      "patient": {
+        "reference": "Patient/MALAFFI-TOKEN-9281-ANON",
+        "display": "Pseudonymised Patient Identifier"
+      },
+      "dateTime": "2026-11-07T21:40:00+04:00",
+      "performer": [
+        {
+          "reference": "Patient/MALAFFI-TOKEN-9281-ANON"
+        }
+      ],
+      "organization": [
+        {
+          "display": "Department of Health - Abu Dhabi (DoH) / Malaffi HIE"
+        }
+      ],
+      "policy": [
+        {
+          "authority": "https://doh.gov.ae",
+          "uri": "https://doh.gov.ae/standards/uae-federal-law-2-2019-hics"
+        }
+      ],
+      "provision": {
+        "type": "permit",
+        "period": {
+          "start": "2026-11-07",
+          "end": "2027-11-07"
+        },
+        "actor": [
+          {
+            "role": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+                  "code": "PROV",
+                  "display": "Treating Healthcare Provider"
+                }
+              ]
+            },
+            "reference": {
+              "display": "Authorised Primary Care & Endocrinology Clinicians at SEHA / Cleveland Clinic Abu Dhabi"
+            }
+          }
+        ],
+        "action": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/consentaction",
+                "code": "access",
+                "display": "Access"
+              }
+            ]
+          }
+        ],
+        "securityLabel": [
+          {
+            "system": "http://terminology.hl7.org/CodeSystem/v3-Confidentiality",
+            "code": "R",
+            "display": "Restricted - Mental Health Confidentiality"
+          }
+        ],
+        "data": [
+          {
+            "meaning": "instance",
+            "reference": {
+              "reference": "Observation/phq9-score-observation"
+            }
+          },
+          {
+            "meaning": "instance",
+            "reference": {
+              "reference": "Observation/gad7-score-observation"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "resourceType": "Observation",
+      "id": "phq9-score-observation",
+      "status": "final",
+      "category": [
+        {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+              "code": "survey",
+              "display": "Survey"
+            }
+          ]
+        }
+      ],
+      "code": {
+        "coding": [
+          {
+            "system": "http://loinc.org",
+            "code": "44249-1",
+            "display": "PHQ-9 quick depression assessment panel [Reported.PHQ]"
+          }
+        ],
+        "text": "PHQ-9 Mood and Vitality Self-Assessment Score"
+      },
+      "subject": {
+        "reference": "Patient/MALAFFI-TOKEN-9281-ANON"
+      },
+      "effectiveDateTime": "2026-11-07T21:40:00+04:00",
+      "valueInteger": 11,
+      "interpretation": [
+        {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+              "code": "N",
+              "display": "Moderate Distress Range (Indicative, Non-Diagnostic)"
+            }
+          ],
+          "text": "Score indicates moderate symptom pressure. Stepped-care suggestion: Level 3 Primary Healthcare or Level 4 Tele-Mental Health."
+        }
+      ],
+      "note": [
+        {
+          "text": "Consent provided voluntarily under UAE Federal Law No. 2 of 2019. Diagnostic evaluation must be performed by a licensed human physician."
+        }
+      ]
+    },
+    {
+      "resourceType": "ServiceRequest",
+      "id": "stepped-care-referral-request",
+      "status": "active",
+      "intent": "proposal",
+      "priority": "routine",
+      "code": {
+        "coding": [
+          {
+            "system": "http://snomed.info/sct",
+            "code": "306206005",
+            "display": "Referral to psychology service"
+          }
+        ],
+        "text": "SANAD Level 4 Tele-Mental Health Consult Request"
+      },
+      "subject": {
+        "reference": "Patient/MALAFFI-TOKEN-9281-ANON"
+      },
+      "occurrenceTiming": {
+        "repeat": {
+          "duration": 24,
+          "durationUnit": "h"
+        }
+      },
+      "performerType": {
+        "coding": [
+          {
+            "system": "http://snomed.info/sct",
+            "code": "310191001",
+            "display": "Clinical psychologist (DoH Abu Dhabi Licensed)"
+          }
+        ]
+      },
+      "reasonCode": [
+        {
+          "text": "Patient self-reported persistent moderate emotional and sleep distress impacting daily functioning."
+        }
+      ]
+    }
+  ]
+}
+

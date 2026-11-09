@@ -1,0 +1,250 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "SANAD Abu Dhabi - Mental Wellbeing Ecosystem Backend API",
+    "version": "1.0.0",
+    "description": "Production-grade, privacy-first REST API specification for the SANAD Abu Dhabi digital health ecosystem. Compliant with UAE Federal Law No. 2 of 2019, Department of Health - Abu Dhabi (DoH) standards, and Malaffi HIE HL7 FHIR R4 interoperability.",
+    "contact": {
+      "name": "SANAD Digital Health Architecture Team",
+      "url": "https://doh.gov.ae"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.sanad.doh.gov.ae/v1",
+      "description": "Production Government Cloud Gateway (Abu Dhabi Local Data Center)"
+    },
+    {
+      "url": "http://localhost:3000/api/v1",
+      "description": "Local Development Sandbox"
+    }
+  ],
+  "paths": {
+    "/assessments/evaluate": {
+      "post": {
+        "summary": "Evaluate validated psychometric instrument (PHQ-9, GAD-7, WHO-5)",
+        "description": "Calculates symptom intensity and determines stepped-care tier. Enforces immediate deterministic crisis intercept if self-harm indicators are present.",
+        "operationId": "evaluateAssessment",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssessmentSubmission"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Assessment evaluated successfully",
+            "content": {
+              "application/json": {
+                "$ref": "#/components/schemas/AssessmentEvaluationResult"
+              }
+            }
+          },
+          "422": {
+            "description": "Incomplete answers or invalid instrument code"
+          }
+        }
+      }
+    },
+    "/crisis/escalate": {
+      "post": {
+        "summary": "Log and coordinate human crisis escalation (Estijaba 800 1717 / 999)",
+        "description": "Dispatches an anonymous, tamper-evident emergency notification to the Estijaba crisis queue under strict clinical safety governance.",
+        "operationId": "escalateCrisis",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CrisisEscalationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Crisis hand-off protocol initiated",
+            "content": {
+              "application/json": {
+                "$ref": "#/components/schemas/CrisisEscalationResponse"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/malaffi/fhir/consent": {
+      "post": {
+        "summary": "Register or revoke Malaffi Health Information Exchange consent",
+        "description": "Stores a revocable FHIR R4 Consent resource authorizing designated healthcare providers to view aggregate wellbeing trends alongside physical health indicators.",
+        "operationId": "updateMalaffiConsent",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MalaffiConsentPayload"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Consent status updated in Malaffi registry"
+          }
+        }
+      }
+    },
+    "/clinicians/directory": {
+      "get": {
+        "summary": "Search DoH-licensed tele-mental health professionals",
+        "description": "Retrieves verified clinical psychologists and psychotherapists filtered by language, insurance coverage, and specialty.",
+        "operationId": "getClinicians",
+        "parameters": [
+          { "name": "language", "in": "query", "schema": { "type": "string" } },
+          { "name": "insurance", "in": "query", "schema": { "type": "string" } },
+          { "name": "tier", "in": "query", "schema": { "type": "integer", "enum": [3, 4, 5] } }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of credentialed clinicians",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/ClinicianProfile" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/appointments/book": {
+      "post": {
+        "summary": "Generate an anonymous booking token for tele-mental consultation",
+        "description": "Secures an appointment slot without linking to government identity or corporate HR systems until the patient arrives for clinical intake.",
+        "operationId": "bookAppointment",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppointmentBookingRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Appointment confirmed with anonymous token",
+            "content": {
+              "application/json": {
+                "$ref": "#/components/schemas/AppointmentBookingConfirmation"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AssessmentSubmission": {
+        "type": "object",
+        "required": ["instrument", "answers"],
+        "properties": {
+          "instrument": { "type": "string", "enum": ["phq9", "gad7", "who5"] },
+          "clientToken": { "type": "string", "format": "uuid" },
+          "answers": {
+            "type": "object",
+            "additionalProperties": { "type": "integer", "minimum": 0, "maximum": 5 }
+          }
+        }
+      },
+      "AssessmentEvaluationResult": {
+        "type": "object",
+        "properties": {
+          "totalScore": { "type": "integer" },
+          "maxPossibleScore": { "type": "integer" },
+          "recommendedTier": { "type": "integer", "minimum": 1, "maximum": 5 },
+          "symptomBand": { "type": "string" },
+          "isCrisisTriggered": { "type": "boolean" },
+          "disclaimerNotice": { "type": "string" },
+          "recommendedActions": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      },
+      "CrisisEscalationRequest": {
+        "type": "object",
+        "required": ["triggerType"],
+        "properties": {
+          "triggerType": { "type": "string", "enum": ["item9_psychometric", "natural_language_flag", "manual_sos"] },
+          "preferredLanguage": { "type": "string", "enum": ["ar", "en"] },
+          "contactMethod": { "type": "string", "enum": ["phone_8001717", "ambulance_999", "whatsapp_chat"] }
+        }
+      },
+      "CrisisEscalationResponse": {
+        "type": "object",
+        "properties": {
+          "incidentReference": { "type": "string" },
+          "escalationStatus": { "type": "string", "enum": ["dispatched", "queue_active", "nurse_assigned"] },
+          "emergencyHotline": { "type": "string" },
+          "timestamp": { "type": "string", "format": "date-time" }
+        }
+      },
+      "MalaffiConsentPayload": {
+        "type": "object",
+        "required": ["consentStatus", "scope"],
+        "properties": {
+          "consentStatus": { "type": "string", "enum": ["active", "revoked"] },
+          "scope": { "type": "string", "enum": ["primary_care_summary", "chronic_disease_coordination"] },
+          "authorizedFacilityIds": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      },
+      "ClinicianProfile": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "name": { "type": "string" },
+          "title": { "type": "string" },
+          "dohLicenseNumber": { "type": "string" },
+          "clinicAffiliation": { "type": "string" },
+          "languages": { "type": "array", "items": { "type": "string" } },
+          "acceptedInsurances": { "type": "array", "items": { "type": "string" } },
+          "estimatedWaitHours": { "type": "integer" },
+          "nextAvailableSlot": { "type": "string" }
+        }
+      },
+      "AppointmentBookingRequest": {
+        "type": "object",
+        "required": ["clinicianId", "selectedSlot"],
+        "properties": {
+          "clinicianId": { "type": "integer" },
+          "selectedSlot": { "type": "string" },
+          "preferredContact": { "type": "string", "enum": ["encrypted_sms", "in_app_notification"] }
+        }
+      },
+      "AppointmentBookingConfirmation": {
+        "type": "object",
+        "properties": {
+          "bookingToken": { "type": "string" },
+          "clinicianName": { "type": "string" },
+          "appointmentSlot": { "type": "string" },
+          "encryptedVideoRoomUri": { "type": "string" },
+          "auditChecksum": { "type": "string" }
+        }
+      }
+    }
+  }
+}
+
