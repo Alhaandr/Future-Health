@@ -453,6 +453,9 @@ function renderHeaderControls() {
       </div>
     </div>
     <div class="top-actions">
+      <a href="demo_showcase.html" class="btn btn-outline" style="background: linear-gradient(135deg, rgba(26,107,95,0.15), rgba(77,193,176,0.25)); border-color: var(--brand-500); color: var(--brand-900); font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:6px;" title="Launch 3-Minute Interactive Video Demonstration">
+        <span>🎬 3-Min Demo Video</span>
+      </a>
       <button class="btn btn-crisis" onclick="openCrisisModal()">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
         ${t('urgentHelpBtn')}

@@ -100,6 +100,22 @@ Future Health/
 * **Clinical Safety Intercept:** Hardened deterministic keyword and pattern matching that routes suicidal ideation or self-harm immediately to **Estijaba 800 1717** and **Ambulance 999**.
 * **Clinical Reasoning Fallback:** If no external API key is configured or network is offline, the system automatically uses the **SANAD Clinical Reasoning Engine v2.4**, ensuring uninterrupted, accurate stepped-care guidance.
 
+---
+
+## 🎬 3-Minute Interactive Demo Video & Production Storyboard
+
+The repository includes a dedicated, broadcast-quality **3-Minute (180-Second) Interactive Solution Demo Showcase** and comprehensive production script:
+
+1. **Interactive Demo Player & Web Showcase:**
+   * **URL:** **[http://localhost:3000/demo_showcase.html](http://localhost:3000/demo_showcase.html)** (or click `🎬 3-Min Demo Video` in the top navbar).
+   * **Exact 180-Second Pacing (0:00 to 3:00):** Automated scene transitions across all 7 stages of the SANAD ecosystem.
+   * **Simulated Interactive Cursor:** Real-time animated pointer demonstrating slider adjustments, CBT reframing, clinic booking, and firewall defense.
+   * **Multimodal Speech & Sound:** Built-in Web Speech natural narration with synchronized English & Arabic teleprompter captions and 432Hz/528Hz Solfeggio soundscapes.
+   * **One-Click Video Recording:** Built-in `🔴 Record Video Stream` button that exports a high-definition `.webm` video recording directly from the browser.
+2. **Production Storyboard & Presenter Script:**
+   * Full documentation: **[`demo_video_production_script.md`](file:///c:/Users/SOOQ%20ELASER/Documents/Future%20Health/demo_video_production_script.md)**
+   * Second-by-second voiceover narration (English & Arabic), visual choreography, and recording checklist for Loom / OBS / Screen Studio.
+
 ### To Run the Application:
 ```powershell
 cd "c:\Users\SOOQ ELASER\Documents\Future Health"
@@ -110,6 +126,7 @@ cd "c:\Users\SOOQ ELASER\Documents\Future Health"
 node server.js
 ```
 * **Frontend Application:** **[http://localhost:3000](http://localhost:3000)** (served from `/frontend`)
+* **3-Minute Interactive Demo Showcase:** **[http://localhost:3000/demo_showcase.html](http://localhost:3000/demo_showcase.html)**
 * **REST API Gateway:** **[http://localhost:3000/api/v1/](http://localhost:3000/api/v1/)**
 
 ### To Run the Test Suite (33/33 Tests):

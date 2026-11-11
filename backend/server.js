@@ -31,7 +31,9 @@ const MIME_TYPES = {
   '.svg': 'image/svg+xml',
   '.png': 'image/png',
   '.jpg': 'image/jpeg',
-  '.ico': 'image/x-icon'
+  '.ico': 'image/x-icon',
+  '.webm': 'video/webm',
+  '.mp4': 'video/mp4'
 };
 
 // Helper: Parse JSON body
@@ -226,6 +228,33 @@ const server = http.createServer(async (req, res) => {
         });
       }
 
+      // 11. Save Demo Video to PC (Stores recorded WebM directly to project directory)
+      if (pathname === '/api/v1/save-demo-video' && req.method === 'POST') {
+        const targetFile = path.join(__dirname, '..', 'SANAD_Abu_Dhabi_Demo_Video.webm');
+        const fileStream = fs.createWriteStream(targetFile);
+
+        req.pipe(fileStream);
+
+        fileStream.on('finish', () => {
+          const stats = fs.statSync(targetFile);
+          console.log(`Demo video saved to PC: ${targetFile} (${(stats.size / (1024 * 1024)).toFixed(2)} MB)`);
+          return sendJson(res, 200, {
+            success: true,
+            message: "Demo video successfully saved to PC",
+            filename: "SANAD_Abu_Dhabi_Demo_Video.webm",
+            filePath: targetFile,
+            bytes: stats.size,
+            sizeMB: (stats.size / (1024 * 1024)).toFixed(2)
+          });
+        });
+
+        fileStream.on('error', (err) => {
+          console.error("Error writing video file to PC:", err);
+          return sendJson(res, 500, { error: "Failed to write video file to disk", details: err.message });
+        });
+        return;
+      }
+
       // Endpoint Not Found
       return sendJson(res, 404, { error: `Endpoint not found: ${pathname}` });
     } catch (apiErr) {
@@ -241,6 +270,19 @@ const server = http.createServer(async (req, res) => {
   let reqPath = decodeURI(pathname);
   if (reqPath === '/' || reqPath === '') {
     reqPath = '/index.html';
+  }
+
+  // Direct video file access (e.g. /SANAD_Abu_Dhabi_Demo_Video.webm)
+  if (reqPath === '/SANAD_Abu_Dhabi_Demo_Video.webm' || reqPath === '/demo_video.webm') {
+    const videoFilePath = path.join(__dirname, '..', 'SANAD_Abu_Dhabi_Demo_Video.webm');
+    if (fs.existsSync(videoFilePath)) {
+      res.writeHead(200, {
+        'Content-Type': 'video/webm',
+        'Access-Control-Allow-Origin': '*',
+        'Content-Disposition': 'inline; filename="SANAD_Abu_Dhabi_Demo_Video.webm"'
+      });
+      return fs.createReadStream(videoFilePath).pipe(res);
+    }
   }
 
   const filePath = path.join(FRONTEND_DIR, reqPath);
