@@ -232,3 +232,4 @@ To record this demo for submission or investor pitch, follow these recommended g
 | **Voice Cadence** | 135 – 145 words per minute | Steady, warm, confident, medical-grade clarity. |
 | **Keyboard Shortcut** | Press `ESC` during rehearsal | Tests the Quick-Exit safety shield for immediate audience wow factor. |
 | **Automated Player** | Open `http://localhost:3000/demo_showcase.html` | Click **"🔴 Record Video Stream"** for automatic capture, or click **"Play Demo (180s)"** while recording your screen. |
+
