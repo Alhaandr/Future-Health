@@ -13,7 +13,7 @@ const http = require('http');
 
 const PORT = 3000;
 const OUTPUT_FILE = path.join(__dirname, 'SANAD_Abu_Dhabi_Demo_Video.webm');
-const TARGET_URL = `http://localhost:${PORT}/generate_video.html?auto=true`;
+const TARGET_URL = `http://localhost:${PORT}/generate_video.html?auto=true&speed=1.0`;
 
 // Find available browser
 function getBrowserPath() {
@@ -91,7 +91,7 @@ async function main() {
 
   // Poll for output file creation and completion
   const startTime = Date.now();
-  const maxWaitMs = 120000; // 2 minutes max
+  const maxWaitMs = 240000; // 4 minutes max (covers 180s real-time 1.0x recording)
   let lastSize = 0;
   let stableCount = 0;
 

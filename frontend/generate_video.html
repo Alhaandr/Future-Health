@@ -156,25 +156,38 @@
     let audioContext = null;
     let audioDest = null;
 
-    // Fast-rendering multiplier (10.0x renders 180s in 18 seconds)
-    const TIME_SCALE = 10.0; 
+    // Default 1.0x Real-time Normal Presentation Speed (1.0x default)
+    const urlParams = new URLSearchParams(window.location.search);
+    const TIME_SCALE = parseFloat(urlParams.get('speed') || '1.0'); 
 
     function initAudio() {
       try {
-        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        audioContext = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 44100 });
         audioDest = audioContext.createMediaStreamDestination();
+
+        // Default continuous 432Hz Solfeggio ambient carrier soundscape
+        const droneOsc = audioContext.createOscillator();
+        const droneGain = audioContext.createGain();
+        droneOsc.type = 'sine';
+        droneOsc.frequency.setValueAtTime(432, audioContext.currentTime);
+        droneGain.gain.setValueAtTime(0.04, audioContext.currentTime);
+        droneOsc.connect(droneGain);
+        droneGain.connect(audioDest);
+        droneOsc.start();
+        console.log("[VIDEO ENGINE] AudioContext initialized with 432Hz default soundscape.");
       } catch(e) {
         console.warn("AudioContext skipped:", e);
       }
     }
 
-    function playTone(freq = 432, duration = 0.4) {
+    function playTone(freq = 528, duration = 0.5) {
       if (!audioContext || !audioDest) return;
       try {
         const osc = audioContext.createOscillator();
         const gain = audioContext.createGain();
+        osc.type = 'sine';
         osc.frequency.setValueAtTime(freq, audioContext.currentTime);
-        gain.gain.setValueAtTime(0.08, audioContext.currentTime);
+        gain.gain.setValueAtTime(0.09, audioContext.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration);
         osc.connect(gain);
         gain.connect(audioDest);
@@ -922,20 +935,31 @@
     // Start Recording & Rendering
     async function startVideoGeneration() {
       recordedChunks = [];
-      console.log("[VIDEO ENGINE] startVideoGeneration invoked.");
+      console.log(`[VIDEO ENGINE] startVideoGeneration invoked (Speed: ${TIME_SCALE}x default, Sound: ON).`);
 
-      statusTitle.textContent = "🎥 Recording Video Stream...";
-      statusDesc.textContent = "Rendering all 180 seconds into high-definition WebM video file...";
+      statusTitle.textContent = "🎥 Recording Video Stream (Default Speed 1.0x & Sound ON)...";
+      statusDesc.textContent = "Rendering all 180 seconds into high-definition WebM video file with default audio soundscape...";
 
-      // Setup MediaStream from canvas
+      // Initialize default continuous Solfeggio soundscape audio
+      initAudio();
+
+      // Setup MediaStream from canvas and attach audio track
       const canvasStream = canvas.captureStream(30);
+      try {
+        if (audioDest && audioDest.stream.getAudioTracks().length > 0) {
+          canvasStream.addTrack(audioDest.stream.getAudioTracks()[0]);
+          console.log("[VIDEO ENGINE] Default Solfeggio audio track successfully attached to video stream.");
+        }
+      } catch(e) {
+        console.warn("[VIDEO ENGINE] Audio track add warning:", e);
+      }
 
       let options = {};
       if (typeof MediaRecorder.isTypeSupported === 'function') {
-        if (MediaRecorder.isTypeSupported('video/webm;codecs=vp9')) {
-          options = { mimeType: 'video/webm;codecs=vp9' };
-        } else if (MediaRecorder.isTypeSupported('video/webm;codecs=vp8')) {
-          options = { mimeType: 'video/webm;codecs=vp8' };
+        if (MediaRecorder.isTypeSupported('video/webm;codecs=vp8,opus')) {
+          options = { mimeType: 'video/webm;codecs=vp8,opus' };
+        } else if (MediaRecorder.isTypeSupported('video/webm;codecs=vp9,opus')) {
+          options = { mimeType: 'video/webm;codecs=vp9,opus' };
         } else if (MediaRecorder.isTypeSupported('video/webm')) {
           options = { mimeType: 'video/webm' };
         }
@@ -954,7 +978,7 @@
         const blob = new Blob(recordedChunks, { type: 'video/webm' });
         console.log(`[VIDEO ENGINE] Recording finished. Total blob size: ${blob.size} bytes`);
         statusTitle.textContent = "💾 Saving Demo Video to PC...";
-        statusDesc.textContent = `Uploading ${(blob.size / (1024*1024)).toFixed(2)} MB video stream to server to write to hard drive...`;
+        statusDesc.textContent = `Uploading ${(blob.size / (1024*1024)).toFixed(2)} MB video stream with sound to server to write to hard drive...`;
 
         try {
           const res = await fetch('/api/v1/save-demo-video', {
@@ -964,8 +988,8 @@
           const result = await res.json();
           if (result.success) {
             console.log(`[VIDEO ENGINE] Saved to PC successfully: ${result.filePath} (${result.sizeMB} MB)`);
-            statusTitle.textContent = "✅ DEMO VIDEO SUCCESSFULLY SAVED TO PC!";
-            statusDesc.innerHTML = `File written to: <code>${result.filePath}</code> (${result.sizeMB} MB).<br>You can play this video anytime or share with judges/investors!`;
+            statusTitle.textContent = "✅ DEMO VIDEO SUCCESSFULLY SAVED TO PC (1.0x SPEED & SOUND ON)!";
+            statusDesc.innerHTML = `File written to: <code>${result.filePath}</code> (${result.sizeMB} MB).<br>Default 1.0x playback speed & embedded Solfeggio audio active!`;
             downloadLink.style.display = 'inline-block';
             downloadLink.href = URL.createObjectURL(blob);
           } else {
@@ -974,7 +998,7 @@
           }
         } catch(err) {
           console.error('[VIDEO ENGINE] Fetch error:', err);
-          statusTitle.textContent = "✅ Video rendered!";
+          statusTitle.textContent = "✅ Video rendered with sound!";
           statusDesc.textContent = `Video recorded (${(blob.size / (1024*1024)).toFixed(2)} MB). Click download below.`;
           downloadLink.style.display = 'inline-block';
           downloadLink.href = URL.createObjectURL(blob);
@@ -984,8 +1008,10 @@
       mediaRecorder.start(250); // chunk every 250ms
 
       let t = 0;
-      const step = 0.5; // advance 0.5 simulation seconds per tick
-      const tickMs = 50; // runs every 50ms -> 180s renders in ~18 seconds
+      // Default 1.0x Real-time Normal Presentation Speed:
+      // advances 0.05s of simulation time every 50ms tick = 1.0s / 1.0s real time
+      const step = 0.05 * TIME_SCALE; 
+      const tickMs = 50; 
       let lastLogged = -1;
 
       const recordTimer = setInterval(() => {
@@ -995,6 +1021,7 @@
         const curScene = Math.floor(t / 25);
         if (curScene !== lastLogged) {
           lastLogged = curScene;
+          playTone(528, 0.4);
           console.log(`[VIDEO ENGINE] Rendered ${t.toFixed(0)}s / ${TOTAL_DURATION}s (${SCENES[curScene] ? SCENES[curScene].title : 'Complete'})`);
         }
 
