@@ -91,7 +91,7 @@ async function main() {
 
   // Poll for output file creation and completion
   const startTime = Date.now();
-  const maxWaitMs = 240000; // 4 minutes max (covers 180s real-time 1.0x recording)
+  const maxWaitMs = 360000; // 6 minutes max (ensures full 180s 1.0x recording finishes with CPU margin)
   let lastSize = 0;
   let stableCount = 0;
 
@@ -108,12 +108,15 @@ async function main() {
             clearInterval(checkInterval);
             console.log("\n");
             console.log("==================================================================");
-            console.log("SUCCESS: DEMO VIDEO GENERATED AND SAVED TO PC!");
+            console.log("SUCCESS: DEMO VIDEO & BACKUP COPY SAVED TO PC!");
             console.log("==================================================================");
-            console.log(`📁 File Location : ${OUTPUT_FILE}`);
+            console.log(`📁 Primary Video : ${OUTPUT_FILE}`);
+            console.log(`📁 Backup Copy   : ${path.join(__dirname, 'SANAD_Abu_Dhabi_Demo_Video_Copy.webm')}`);
             console.log(`📦 File Size     : ${(stats.size / (1024 * 1024)).toFixed(2)} MB (${stats.size.toLocaleString()} bytes)`);
             console.log(`⏱️ Duration      : 180 Seconds (3:00 Minutes)`);
-            console.log(`🎬 Format        : WebM (VP9 / High-Definition 1280x720)`);
+            console.log(`⚡ Speed         : 1.0x Real-time Default Playback`);
+            console.log(`🎧 Audio         : Embedded 432Hz/528Hz Solfeggio Soundscape`);
+            console.log(`🎬 Format        : WebM (VP8/VP9 + Opus Audio / 1280x720 HD)`);
             console.log("==================================================================");
 
             // Clean up browser
