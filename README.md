@@ -4,6 +4,18 @@
 
 ---
 
+## 📑 Official Future Health Submission Deliverables (16 Slides)
+
+* **Official PowerPoint Presentation (.pptx):** [`Future_Health_SANAD_Abu_Dhabi_Submission_Deck.pptx`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/Future_Health_SANAD_Abu_Dhabi_Submission_Deck.pptx) *(696 KB, populated directly on the official Future Health challenge template)*
+* **Interactive HTML5 Presentation Deck (16:9):** [`frontend/pitch_deck.html`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/frontend/pitch_deck.html) *(Full presenter mode, keyboard controls, thumbnail drawer, 1-click Print to PDF)*
+* **Slide-by-Slide Transcript & Clinical Notes:** [`pitch_deck_presentation.md`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/pitch_deck_presentation.md)
+* **3-Minute Master Demo Video:** [`SANAD_Abu_Dhabi_Demo_Video.webm`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/SANAD_Abu_Dhabi_Demo_Video.webm) *(4.59 MB, 180s at 1.0x default speed with Solfeggio soundscape)*
+* **Interactive Video Showcase Studio:** [`frontend/demo_showcase.html`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/frontend/demo_showcase.html)
+* **Clinical Safety Case (DCB0129):** [`clinical_safety_case_dcb0129.md`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/clinical_safety_case_dcb0129.md)
+* **Production Test Suite (33/33 Tests Passing):** [`test_suite.js`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/test_suite.js)
+
+---
+
 ## 🌟 Strategic Vision: Beyond Another Mental Health Chatbot
 
 Conventional digital mental health applications fail at a predictable point: they administer a screening test, spit out an alarming score or a generic chatbot conversation, and leave the individual to navigate fragmented healthcare services alone. This creates an **$85\%$ conversion drop-off**, where patients who screen positive never receive qualified professional care.

@@ -33,7 +33,9 @@ const MIME_TYPES = {
   '.jpg': 'image/jpeg',
   '.ico': 'image/x-icon',
   '.webm': 'video/webm',
-  '.mp4': 'video/mp4'
+  '.mp4': 'video/mp4',
+  '.pptx': 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+  '.pdf': 'application/pdf'
 };
 
 // Helper: Parse JSON body
@@ -283,6 +285,10 @@ const server = http.createServer(async (req, res) => {
   let reqPath = decodeURI(pathname);
   if (reqPath === '/' || reqPath === '') {
     reqPath = '/index.html';
+  } else if (reqPath === '/pitch_deck') {
+    reqPath = '/pitch_deck.html';
+  } else if (reqPath === '/demo' || reqPath === '/demo_showcase') {
+    reqPath = '/demo_showcase.html';
   }
 
   // Direct video file access (primary and backup copy)
