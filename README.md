@@ -6,8 +6,11 @@
 
 ## 📑 Official Future Health Submission Deliverables (16 Slides)
 
+* **Official Presentation Deck (PDF 16:9):** [`Future_Health_SANAD_Abu_Dhabi_Submission_Deck.pdf`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/Future_Health_SANAD_Abu_Dhabi_Submission_Deck.pdf) *(1.56 MB, 16 Slides, high-resolution vector PDF)*
+* **Official Presentation Deck (PDF Copy):** [`Future_Health_SANAD_Abu_Dhabi_Submission_Deck_Copy.pdf`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/Future_Health_SANAD_Abu_Dhabi_Submission_Deck_Copy.pdf)
 * **Official PowerPoint Presentation (.pptx):** [`Future_Health_SANAD_Abu_Dhabi_Submission_Deck.pptx`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/Future_Health_SANAD_Abu_Dhabi_Submission_Deck.pptx) *(696 KB, populated directly on the official Future Health challenge template)*
-* **Interactive HTML5 Presentation Deck (16:9):** [`frontend/pitch_deck.html`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/frontend/pitch_deck.html) *(Full presenter mode, keyboard controls, thumbnail drawer, 1-click Print to PDF)*
+* **Official PowerPoint Presentation (.pptx Copy):** [`Future_Health_SANAD_Abu_Dhabi_Submission_Deck_Copy.pptx`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/Future_Health_SANAD_Abu_Dhabi_Submission_Deck_Copy.pptx)
+* **Interactive HTML5 Presentation Deck (16:9):** [`frontend/pitch_deck.html`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/frontend/pitch_deck.html) *(Full presenter mode, keyboard controls, thumbnail drawer, 1-click Download PDF / PPTX)*
 * **Slide-by-Slide Transcript & Clinical Notes:** [`pitch_deck_presentation.md`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/pitch_deck_presentation.md)
 * **3-Minute Master Demo Video:** [`SANAD_Abu_Dhabi_Demo_Video.webm`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/SANAD_Abu_Dhabi_Demo_Video.webm) *(4.59 MB, 180s at 1.0x default speed with Solfeggio soundscape)*
 * **Interactive Video Showcase Studio:** [`frontend/demo_showcase.html`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/frontend/demo_showcase.html)

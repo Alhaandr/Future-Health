@@ -5,9 +5,12 @@
 ---
 
 ### Executive Overview & Deliverables Map
+- **Official Submission PDF (16:9 Widescreen):** [`Future_Health_SANAD_Abu_Dhabi_Submission_Deck.pdf`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/Future_Health_SANAD_Abu_Dhabi_Submission_Deck.pdf) *(1.56 MB, 16 Pages, Native 16:9 Print-to-PDF)*
+- **Official Submission PDF Copy:** [`Future_Health_SANAD_Abu_Dhabi_Submission_Deck_Copy.pdf`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/Future_Health_SANAD_Abu_Dhabi_Submission_Deck_Copy.pdf)
 - **Official Submission PowerPoint (.pptx):** [`Future_Health_SANAD_Abu_Dhabi_Submission_Deck.pptx`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/Future_Health_SANAD_Abu_Dhabi_Submission_Deck.pptx) *(696 KB, 16 Slides, Native Template Layout)*
-- **Alternate Mirror (.pptx):** [`SANAD_Abu_Dhabi_Pitch_Deck.pptx`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/SANAD_Abu_Dhabi_Pitch_Deck.pptx)
-- **Interactive Web Presentation Deck (16:9):** [`frontend/pitch_deck.html`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/frontend/pitch_deck.html) (Full-screen presenter mode, keyboard controls, 1-click Print to PDF)
+- **Official Submission PowerPoint Copy (.pptx):** [`Future_Health_SANAD_Abu_Dhabi_Submission_Deck_Copy.pptx`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/Future_Health_SANAD_Abu_Dhabi_Submission_Deck_Copy.pptx)
+- **Alternate Mirror (.pptx & .pdf):** [`SANAD_Abu_Dhabi_Pitch_Deck.pptx`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/SANAD_Abu_Dhabi_Pitch_Deck.pptx) / [`SANAD_Abu_Dhabi_Pitch_Deck.pdf`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/SANAD_Abu_Dhabi_Pitch_Deck.pdf)
+- **Interactive Web Presentation Deck (16:9):** [`frontend/pitch_deck.html`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/frontend/pitch_deck.html) (Full-screen presenter mode, keyboard controls, 1-click Download PDF / PPTX)
 - **3-Minute Master Demo Video:** [`SANAD_Abu_Dhabi_Demo_Video.webm`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/SANAD_Abu_Dhabi_Demo_Video.webm) *(4.59 MB, 180s at 1.0x default speed with Solfeggio soundscape)*
 - **Live Local Platform:** `http://localhost:3000`
 - **Clinical Safety Case (DCB0129):** [`clinical_safety_case_dcb0129.md`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/clinical_safety_case_dcb0129.md)
@@ -283,3 +286,4 @@ $$\text{Where } S_{diff} = \sqrt{2 \cdot (S_E)^2} \quad \text{and} \quad S_E = s
 
 ---
 *Document compiled and verified for the Future Health Digital Innovation Challenge submission.*
+

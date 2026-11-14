@@ -459,24 +459,79 @@
     }
 
     /* Print / PDF Mode */
+    @page {
+      size: 16in 9in;
+      margin: 0;
+    }
     @media print {
-      body {
-        background: #fff;
+      html, body {
+        width: 16in !important;
+        height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #EAE4DC !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        overflow: visible !important;
       }
       .deck-toolbar, .thumbnails-drawer {
         display: none !important;
       }
       .deck-container {
-        margin: 0;
-        padding: 0;
-        max-width: 100%;
+        margin: 0 !important;
+        padding: 0 !important;
+        max-width: none !important;
+        width: 16in !important;
       }
       .slide-frame {
         display: flex !important;
-        page-break-after: always;
-        box-shadow: none;
-        border-radius: 0;
-        margin-bottom: 20px;
+        width: 16in !important;
+        height: 9in !important;
+        page-break-after: always !important;
+        break-after: page !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        position: relative !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+      }
+      .slide-body {
+        padding: 16px 48px 24px 48px !important;
+        overflow: hidden !important;
+      }
+      .slide-header {
+        height: 80px !important;
+        padding: 0 48px !important;
+      }
+      .slide-title-bar {
+        padding: 24px 48px 12px 48px !important;
+      }
+      .slide-title {
+        font-size: 30px !important;
+      }
+      .slide-subtitle {
+        font-size: 16px !important;
+      }
+      .slide-footer {
+        height: 36px !important;
+        padding: 0 48px !important;
+        font-size: 13px !important;
+      }
+      .card-title {
+        font-size: 17px !important;
+      }
+      .card-body, .card {
+        font-size: 14px !important;
+      }
+      .deck-table th {
+        font-size: 14px !important;
+        padding: 12px 14px !important;
+      }
+      .deck-table td {
+        font-size: 13px !important;
+        padding: 10px 14px !important;
       }
     }
   </style>
@@ -500,8 +555,9 @@
 
     <div class="toolbar-right">
       <button class="btn-action" onclick="toggleFullscreen()">⛶ Fullscreen</button>
-      <button class="btn-action" onclick="window.print()">🖨️ Print / Save PDF</button>
+      <a href="Future_Health_SANAD_Abu_Dhabi_Submission_Deck.pdf" download class="btn-action" style="background:#C25953;">📄 Download PDF</a>
       <a href="Future_Health_SANAD_Abu_Dhabi_Submission_Deck.pptx" download class="btn-action" style="background:#0F4C42;">📥 Download PPTX</a>
+      <button class="btn-action" onclick="window.print()">🖨️ Print View</button>
       <a href="index.html" class="btn-action" style="background:#4A3E39;">🏠 App Home</a>
     </div>
   </header>
@@ -1498,6 +1554,9 @@
           Bridging anonymous digital self-care with verified clinical outcomes across the Emirate of Abu Dhabi.
         </div>
         <div style="display: flex; gap: 16px;">
+          <a href="Future_Health_SANAD_Abu_Dhabi_Submission_Deck.pdf" download class="btn-action" style="padding: 10px 20px; font-size: 14px; background: #C25953;">
+            📄 Download Submission PDF
+          </a>
           <a href="Future_Health_SANAD_Abu_Dhabi_Submission_Deck.pptx" download class="btn-action" style="padding: 10px 20px; font-size: 14px;">
             📥 Download Submission PPTX
           </a>
@@ -1597,3 +1656,4 @@
   </script>
 </body>
 </html>
+
