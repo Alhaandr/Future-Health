@@ -2,12 +2,21 @@
 <html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
   <title>SANAD Abu Dhabi (سند) | Earlier, Safer Mental Wellbeing Support</title>
   <meta name="description" content="A Privacy-First, Human-Centred Digital Health Ecosystem for Earlier Identification and Safer Access to Mental Wellbeing Support in Abu Dhabi, UAE.">
   <meta name="keywords" content="Mental Wellbeing, Abu Dhabi, DoH, Malaffi, Stepped Care, Estijaba 8001717, PHQ-9, GAD-7, UAE Health">
+  <!-- Mobile & PWA Portability Meta -->
+  <meta name="theme-color" content="#1A6B5F">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="SANAD Abu Dhabi">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="format-detection" content="telephone=no">
+  <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231A6B5F'/><text x='50' y='65' font-size='50' text-anchor='middle' fill='white'>س</text></svg>">
 </head>
 <body>
 
@@ -20,13 +29,7 @@
       <span>🛡️ <strong>Privacy Shield Active:</strong> Zero-Profile Guest Mode • No Employer or Insurer Tracking</span>
     </div>
     <div style="display:flex; align-items:center; gap:12px;">
-      <a href="pitch_deck.html" style="color:#0F4C42; background:rgba(26,107,95,0.18); border:1px solid #1A6B5F; padding:2px 8px; border-radius:4px; font-size:11px; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:4px;" title="View 16-Slide Future Health Pitch Deck">
-        <span>📑 Pitch Deck (16 Slides)</span>
-      </a>
-      <a href="demo_showcase.html" style="color:var(--brand-800); background:rgba(77,193,176,0.2); border:1px solid var(--brand-500); padding:2px 8px; border-radius:4px; font-size:11px; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:4px;" title="Watch 3-Minute Solution Video">
-        <span>🎬 3-Min Demo Video</span>
-      </a>
-      <span style="font-size:11px; opacity:0.8;">Need to hide this screen? (Press ESC)</span>
+      <span class="quick-exit-hint" style="font-size:11px; opacity:0.8;">Need to hide this screen? (Press ESC)</span>
       <button class="quick-exit-btn" onclick="executeQuickExit()" title="Instantly hide this page and open a neutral portal">
         <span>✕ Quick Exit / خروج سريع</span>
       </button>
@@ -68,7 +71,14 @@
 
   </div>
 
-  <!-- Core JavaScript -->
+  <!-- Core JavaScript & PWA Service Worker -->
   <script src="app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(() => {});
+      });
+    }
+  </script>
 </body>
 </html>

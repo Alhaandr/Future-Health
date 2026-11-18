@@ -4,15 +4,14 @@
 
 ---
 
-## 📑 Official Future Health Submission Deliverables (16 Slides)
+## 📑 Official Future Health Submission Deliverables
 
-* **Official PowerPoint Presentation (.pptx):** [`Future_Health_SANAD_Abu_Dhabi_Submission_Deck.pptx`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/Future_Health_SANAD_Abu_Dhabi_Submission_Deck.pptx) *(696 KB, populated directly on the official Future Health challenge template)*
-* **Interactive HTML5 Presentation Deck (16:9):** [`frontend/pitch_deck.html`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/frontend/pitch_deck.html) *(Full presenter mode, keyboard controls, thumbnail drawer, 1-click Print to PDF)*
-* **Slide-by-Slide Transcript & Clinical Notes:** [`pitch_deck_presentation.md`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/pitch_deck_presentation.md)
-* **3-Minute Master Demo Video:** [`SANAD_Abu_Dhabi_Demo_Video.webm`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/SANAD_Abu_Dhabi_Demo_Video.webm) *(4.59 MB, 180s at 1.0x default speed with Solfeggio soundscape)*
-* **Interactive Video Showcase Studio:** [`frontend/demo_showcase.html`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/frontend/demo_showcase.html)
+* **Bilingual Web & Mobile Application (PWA):** [`frontend/index.html`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/frontend/index.html) *(Responsive, standalone PWA support, touch-ergonomic, WCAG 2.1 AA compliant)*
+* **Mobile App Manifest & Offline Service Worker:** [`frontend/manifest.json`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/frontend/manifest.json) & [`frontend/sw.js`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/frontend/sw.js)
 * **Clinical Safety Case (DCB0129):** [`clinical_safety_case_dcb0129.md`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/clinical_safety_case_dcb0129.md)
 * **Production Test Suite (33/33 Tests Passing):** [`test_suite.js`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/test_suite.js)
+* **Vercel Cloud Deployment Guide:** [`VERCEL_DEPLOYMENT_GUIDE.md`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/VERCEL_DEPLOYMENT_GUIDE.md) *(1-Click & CLI production deployment guide)*
+* **HL7 FHIR Malaffi Integration Specification:** [`fhir_malaffi_integration.json`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/fhir_malaffi_integration.json)
 
 ---
 
@@ -114,21 +113,23 @@ Future Health/
 
 ---
 
-## 🎬 3-Minute Interactive Demo Video & Production Storyboard
+## 📱 Cross-Platform Web & Mobile Portability (PWA)
 
-The repository includes a dedicated, broadcast-quality **3-Minute (180-Second) Interactive Solution Demo Showcase** and comprehensive production script:
+SANAD Abu Dhabi is engineered as a responsive, touch-friendly, cross-platform application designed for both desktop web browsers and mobile phone screens:
 
-1. **Interactive Demo Player & Web Showcase:**
-   * **URL:** **[http://localhost:3000/demo_showcase.html](http://localhost:3000/demo_showcase.html)** (or click `🎬 3-Min Demo Video` in the top navbar).
-   * **Exact 180-Second Pacing (0:00 to 3:00):** Automated scene transitions across all 7 stages of the SANAD ecosystem.
-   * **Simulated Interactive Cursor:** Real-time animated pointer demonstrating slider adjustments, CBT reframing, clinic booking, and firewall defense.
-   * **Multimodal Speech & Sound:** Built-in Web Speech natural narration with synchronized English & Arabic teleprompter captions and 432Hz/528Hz Solfeggio soundscapes.
-   * **One-Click Video Recording:** Built-in `🔴 Record Video Stream` button that exports a high-definition `.webm` video recording directly from the browser.
-2. **Production Storyboard & Presenter Script:**
-   * Full documentation: **[`demo_video_production_script.md`](file:///c:/Users/SOOQ%20ELASER/Documents/Future%20Health/demo_video_production_script.md)**
-   * Second-by-second voiceover narration (English & Arabic), visual choreography, and recording checklist for Loom / OBS / Screen Studio.
+1. **True Mobile Viewport & Ergonomics:**
+   - **Safe-Area Inset Support:** Fully respects iOS Dynamic Island, notches, and Android gesture navigation bars (`env(safe-area-inset-top)` / `env(safe-area-inset-bottom)`).
+   - **Touch Target Sizing:** Minimum 44px tap targets on all interactive buttons, inputs, tabs, and emergency crisis selectors according to WCAG 2.1 AA and Apple/Google mobile guidelines.
+   - **Adaptive Navigation:** Horizontal touch-scrollable navigation bar with momentum scrolling and instant tab switching.
+   - **Responsive Cards & Grid:** Fluid 1-column stacking on narrow smartphone viewports (`<= 640px` and `<= 480px`) preventing horizontal scrolling or overflow.
+2. **Progressive Web App (PWA) Capabilities:**
+   - **Installable Web App:** Web App Manifest (`frontend/manifest.json`) supporting "Add to Home Screen" on iOS Safari and Android Chrome with standalone full-screen presentation.
+   - **Offline Resilience:** Cache-first service worker (`frontend/sw.js`) ensuring critical static assets remain responsive even in low-bandwidth or disconnected states.
+3. **Simulated Mobile Preview Mode (Desktop Review):**
+   - On desktop screens, users can click **"📱 Mobile Frame"** in the top navigation bar to preview the exact mobile viewport layout.
+   - On actual mobile devices, the simulated bezel is automatically hidden, providing a natural full-screen experience.
 
-### To Run the Application:
+### To Run the Application Locally:
 ```powershell
 cd "c:\Users\SOOQ ELASER\Documents\Future Health"
 
@@ -138,12 +139,15 @@ cd "c:\Users\SOOQ ELASER\Documents\Future Health"
 node server.js
 ```
 * **Frontend Application:** **[http://localhost:3000](http://localhost:3000)** (served from `/frontend`)
-* **3-Minute Interactive Demo Showcase:** **[http://localhost:3000/demo_showcase.html](http://localhost:3000/demo_showcase.html)**
 * **REST API Gateway:** **[http://localhost:3000/api/v1/](http://localhost:3000/api/v1/)**
 
-### To Run the Test Suite (33/33 Tests):
+### To Run the Test Suite:
 ```powershell
+# Core 33-point unit & clinical test suite:
 node test_suite.js
+
+# Vercel serverless integration test suite:
+node test_vercel_handler.js
 ```
 
 ---

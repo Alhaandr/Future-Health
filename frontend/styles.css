@@ -93,10 +93,11 @@ body {
   background-attachment: fixed;
   color: var(--neutral-800);
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 18px;
+  padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
@@ -172,14 +173,17 @@ body {
   transition: max-width var(--transition-normal);
 }
 
-.mobile-mode-active.sanad-app-container {
-  max-width: 430px;
-}
-.mobile-mode-active .app-viewport-layout {
-  border-radius: 46px;
-  border: 10px solid #1E293B;
-  box-shadow: 0 30px 70px rgba(15, 23, 42, 0.35);
-  min-height: 880px;
+/* Simulated Mobile Preview Frame (only active on desktop viewports) */
+@media (min-width: 769px) {
+  .mobile-mode-active.sanad-app-container {
+    max-width: 430px;
+  }
+  .mobile-mode-active .app-viewport-layout {
+    border-radius: 46px;
+    border: 10px solid #1E293B;
+    box-shadow: 0 30px 70px rgba(15, 23, 42, 0.35);
+    min-height: 880px;
+  }
 }
 
 /* Glassmorphic Top Controls Bar */
@@ -715,7 +719,7 @@ body {
 
 .provider-cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 18px;
 }
 
@@ -788,7 +792,7 @@ body {
 /* The 6 Closed-Loop Questions Cards */
 .closed-loop-qa-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 18px;
   margin: 20px 0;
 }
@@ -1476,4 +1480,300 @@ body {
 .firewall-blocked {
   color: #EF4444;
   font-weight: 700;
+}
+
+/* ==========================================================================
+   Comprehensive Mobile & Cross-Device Portability System
+   ========================================================================== */
+
+/* Table responsive wrapper */
+.table-responsive-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Touch & Portability Enhancements for Tablets & Mobile Screens (<= 768px) */
+@media (max-width: 768px) {
+  body {
+    padding: max(8px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-right)) max(12px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left));
+  }
+
+  /* Hide simulated desktop device toggle on real mobile screens */
+  .device-toggle-btn {
+    display: none !important;
+  }
+
+  .sanad-app-container {
+    width: 100%;
+    max-width: 100%;
+    gap: 10px;
+    margin: 0 auto;
+  }
+
+  .app-viewport-layout {
+    border-radius: var(--radius-md);
+    min-height: auto;
+    border: 1px solid var(--border-subtle);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .top-bar-controls {
+    padding: 12px 14px;
+    gap: 10px;
+    border-radius: var(--radius-md);
+  }
+
+  .brand-badge {
+    gap: 10px;
+  }
+
+  .brand-icon {
+    width: 38px;
+    height: 38px;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .brand-titles h1 {
+    font-size: 15px;
+    line-height: 1.25;
+  }
+
+  .brand-titles p {
+    font-size: 11px;
+  }
+
+  .top-actions {
+    width: 100%;
+    justify-content: flex-end;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    min-height: 44px;
+    padding: 8px 14px;
+    font-size: 12.5px;
+  }
+
+  .quick-exit-bar {
+    padding: 6px 12px;
+    font-size: 11px;
+    border-radius: var(--radius-sm);
+  }
+
+  .quick-exit-btn {
+    min-height: 38px;
+    padding: 6px 14px;
+  }
+
+  .a11y-controls-bar {
+    padding: 8px 12px;
+    gap: 6px;
+    font-size: 11px;
+  }
+
+  .a11y-btn {
+    min-height: 36px;
+    padding: 4px 10px;
+    font-size: 11px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .app-nav-tabs {
+    padding: 0 6px;
+    gap: 2px;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+  }
+
+  .nav-tab-btn {
+    min-height: 46px;
+    padding: 12px 10px;
+    font-size: 12.5px;
+    flex-shrink: 0;
+    scroll-snap-align: start;
+  }
+
+  .app-main-content {
+    padding: 14px 10px;
+  }
+
+  .sanad-card {
+    padding: 16px 14px;
+    margin-bottom: 14px;
+    border-radius: var(--radius-sm);
+  }
+
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .card-title-group h2, 
+  .card-title-group h3 {
+    font-size: 16px;
+  }
+
+  .provider-cards-grid,
+  .closed-loop-qa-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .facility-card,
+  .closed-loop-qa-card {
+    padding: 16px 14px;
+  }
+
+  /* Murshid Chat Mobile Layout */
+  .murshid-chat-container {
+    height: 520px;
+    border-radius: var(--radius-sm);
+  }
+
+  .murshid-chat-header {
+    padding: 12px 14px;
+  }
+
+  .murshid-messages-area {
+    padding: 12px 10px;
+    gap: 10px;
+  }
+
+  .chat-bubble {
+    max-width: 90%;
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+
+  .murshid-quick-prompts {
+    padding: 8px 10px;
+    gap: 6px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .quick-prompt-chip {
+    flex-shrink: 0;
+    min-height: 38px;
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    padding: 6px 12px;
+  }
+
+  .murshid-input-bar {
+    padding: 10px 12px;
+    gap: 8px;
+  }
+
+  .murshid-input-bar input {
+    min-height: 44px;
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+
+  /* Modals Mobile Touch optimization */
+  .crisis-modal-card,
+  .brief-modal-card {
+    padding: 22px 16px;
+    max-width: 96vw;
+    width: 100%;
+    max-height: 90dvh;
+    border-radius: var(--radius-md);
+  }
+
+  .crisis-action-btn {
+    min-height: 48px;
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+
+  .clinician-inbox-table {
+    min-width: 580px;
+    font-size: 12px;
+  }
+}
+
+/* Specific Optimizations for Phones (<= 480px) */
+@media (max-width: 480px) {
+  body {
+    padding: max(4px, env(safe-area-inset-top)) max(4px, env(safe-area-inset-right)) max(8px, env(safe-area-inset-bottom)) max(4px, env(safe-area-inset-left));
+  }
+
+  .top-bar-controls {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 10px 12px;
+  }
+
+  .brand-badge {
+    justify-content: flex-start;
+  }
+
+  .top-actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+
+  .btn-crisis {
+    grid-column: 1 / -1;
+    min-height: 46px;
+  }
+
+  .quick-exit-bar {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+    gap: 6px;
+  }
+
+  .quick-exit-btn {
+    width: 100%;
+    justify-content: center;
+    min-height: 42px;
+  }
+
+  .a11y-controls-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .a11y-toggles {
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .option-btn {
+    min-height: 46px;
+    font-size: 12px;
+    padding: 10px 8px;
+  }
+
+  .rci-calc-output {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+    gap: 8px;
+  }
+}
+
+/* Standalone PWA adjustments */
+@media (display-mode: standalone) {
+  body {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .quick-exit-bar {
+    margin-top: 4px;
+  }
 }
