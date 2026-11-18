@@ -1,0 +1,24 @@
+{
+  "name": "future-health-sanad-abu-dhabi",
+  "version": "1.0.0",
+  "description": "SANAD Abu Dhabi - Closed-Loop Mental Wellbeing Care Ecosystem",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test_suite.js",
+    "build": "node -e \"console.log('Build completed for Vercel deployment.')\""
+  },
+  "keywords": [
+    "mental-health",
+    "abu-dhabi",
+    "stepped-care",
+    "future-health",
+    "doh",
+    "malaffi"
+  ],
+  "author": "SANAD Abu Dhabi Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.x"
+  }
+}

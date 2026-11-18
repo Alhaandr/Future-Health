@@ -38,8 +38,16 @@ const MIME_TYPES = {
   '.pdf': 'application/pdf'
 };
 
-// Helper: Parse JSON body
+// Helper: Parse JSON body (compatible with standalone Node.js & Vercel Serverless)
 function parseJsonBody(req) {
+  if (req.body) {
+    if (typeof req.body === 'object') return Promise.resolve(req.body);
+    try {
+      return Promise.resolve(JSON.parse(req.body));
+    } catch (e) {
+      return Promise.resolve({});
+    }
+  }
   return new Promise((resolve, reject) => {
     let body = '';
     req.on('data', chunk => {
@@ -70,7 +78,8 @@ function sendJson(res, statusCode, data) {
   res.end(JSON.stringify(data));
 }
 
-const server = http.createServer(async (req, res) => {
+// Master Request Handler (used by both local http.Server and Vercel Serverless Function)
+async function requestHandler(req, res) {
   // CORS Pre-flight
   if (req.method === 'OPTIONS') {
     res.writeHead(204, {
@@ -331,7 +340,9 @@ const server = http.createServer(async (req, res) => {
     });
     fs.createReadStream(filePath).pipe(res);
   });
-});
+}
+
+const server = http.createServer(requestHandler);
 
 function startServer(port = PORT) {
   return server.listen(port, '0.0.0.0', () => {
@@ -346,5 +357,5 @@ if (require.main === module) {
   startServer();
 }
 
-module.exports = { server, startServer };
+module.exports = { server, startServer, requestHandler };
 

@@ -16,6 +16,7 @@
 * **Interactive Video Showcase Studio:** [`frontend/demo_showcase.html`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/frontend/demo_showcase.html)
 * **Clinical Safety Case (DCB0129):** [`clinical_safety_case_dcb0129.md`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/clinical_safety_case_dcb0129.md)
 * **Production Test Suite (33/33 Tests Passing):** [`test_suite.js`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/test_suite.js)
+* **Vercel Cloud Deployment Guide:** [`VERCEL_DEPLOYMENT_GUIDE.md`](file:///C:/Users/SOOQ%20ELASER/Documents/Future%20Health/VERCEL_DEPLOYMENT_GUIDE.md) *(1-Click & CLI production deployment guide)*
 
 ---
 

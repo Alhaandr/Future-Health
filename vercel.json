@@ -1,0 +1,24 @@
+{
+  "version": 2,
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/index.js" },
+    { "source": "/pitch_deck", "destination": "/frontend/pitch_deck.html" },
+    { "source": "/demo_showcase", "destination": "/frontend/demo_showcase.html" },
+    { "source": "/generate_video", "destination": "/frontend/generate_video.html" },
+    { "source": "/demo_video.webm", "destination": "/SANAD_Abu_Dhabi_Demo_Video.webm" },
+    { "source": "/SANAD_Abu_Dhabi_Demo_Video.webm", "destination": "/SANAD_Abu_Dhabi_Demo_Video.webm" },
+    { "source": "/", "destination": "/frontend/index.html" },
+    { "source": "/(.*)", "destination": "/frontend/$1" }
+  ],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Credentials", "value": "true" },
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET,OPTIONS,PATCH,DELETE,POST,PUT" },
+        { "key": "Access-Control-Allow-Headers", "value": "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization" }
+      ]
+    }
+  ]
+}
