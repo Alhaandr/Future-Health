@@ -32,10 +32,7 @@ const MIME_TYPES = {
   '.png': 'image/png',
   '.jpg': 'image/jpeg',
   '.ico': 'image/x-icon',
-  '.webm': 'video/webm',
-  '.mp4': 'video/mp4',
-  '.pptx': 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-  '.pdf': 'application/pdf'
+  '.webmanifest': 'application/manifest+json'
 };
 
 // Helper: Parse JSON body (compatible with standalone Node.js & Vercel Serverless)
@@ -239,46 +236,6 @@ async function requestHandler(req, res) {
         });
       }
 
-      // 11. Save Demo Video to PC (Stores recorded WebM and a duplicate copy directly to project directory)
-      if (pathname === '/api/v1/save-demo-video' && req.method === 'POST') {
-        const targetFile = path.join(__dirname, '..', 'SANAD_Abu_Dhabi_Demo_Video.webm');
-        const copyFile = path.join(__dirname, '..', 'SANAD_Abu_Dhabi_Demo_Video_Copy.webm');
-        const tempFile = path.join(__dirname, '..', 'SANAD_Abu_Dhabi_Demo_Video.tmp');
-        const fileStream = fs.createWriteStream(tempFile);
-
-        req.pipe(fileStream);
-
-        fileStream.on('finish', () => {
-          try {
-            fs.copyFileSync(tempFile, targetFile);
-            fs.copyFileSync(tempFile, copyFile);
-            try { fs.unlinkSync(tempFile); } catch(e) {}
-
-            const stats = fs.statSync(targetFile);
-            console.log(`Demo video saved to PC: ${targetFile} & copy: ${copyFile} (${(stats.size / (1024 * 1024)).toFixed(2)} MB)`);
-            return sendJson(res, 200, {
-              success: true,
-              message: "Demo video and copy successfully saved to PC",
-              filename: "SANAD_Abu_Dhabi_Demo_Video.webm",
-              copyFilename: "SANAD_Abu_Dhabi_Demo_Video_Copy.webm",
-              filePath: targetFile,
-              copyPath: copyFile,
-              bytes: stats.size,
-              sizeMB: (stats.size / (1024 * 1024)).toFixed(2)
-            });
-          } catch(copyErr) {
-            console.error("Error finalizing video files:", copyErr);
-            return sendJson(res, 500, { error: "Failed to finalize video files", details: copyErr.message });
-          }
-        });
-
-        fileStream.on('error', (err) => {
-          console.error("Error writing video file to PC:", err);
-          return sendJson(res, 500, { error: "Failed to write video file to disk", details: err.message });
-        });
-        return;
-      }
-
       // Endpoint Not Found
       return sendJson(res, 404, { error: `Endpoint not found: ${pathname}` });
     } catch (apiErr) {
@@ -294,24 +251,6 @@ async function requestHandler(req, res) {
   let reqPath = decodeURI(pathname);
   if (reqPath === '/' || reqPath === '') {
     reqPath = '/index.html';
-  } else if (reqPath === '/pitch_deck') {
-    reqPath = '/pitch_deck.html';
-  } else if (reqPath === '/demo' || reqPath === '/demo_showcase') {
-    reqPath = '/demo_showcase.html';
-  }
-
-  // Direct video file access (primary and backup copy)
-  if (reqPath === '/SANAD_Abu_Dhabi_Demo_Video.webm' || reqPath === '/demo_video.webm' || reqPath === '/SANAD_Abu_Dhabi_Demo_Video_Copy.webm') {
-    const requestedName = reqPath.includes('Copy') ? 'SANAD_Abu_Dhabi_Demo_Video_Copy.webm' : 'SANAD_Abu_Dhabi_Demo_Video.webm';
-    const videoFilePath = path.join(__dirname, '..', requestedName);
-    if (fs.existsSync(videoFilePath)) {
-      res.writeHead(200, {
-        'Content-Type': 'video/webm',
-        'Access-Control-Allow-Origin': '*',
-        'Content-Disposition': `inline; filename="${requestedName}"`
-      });
-      return fs.createReadStream(videoFilePath).pipe(res);
-    }
   }
 
   const filePath = path.join(FRONTEND_DIR, reqPath);

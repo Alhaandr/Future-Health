@@ -1,10 +1,9 @@
 # SANAD Abu Dhabi — Vercel Deployment Guide
 ### Complete Step-by-Step Instructions for Production Cloud Deployment
 
-This project is pre-configured for deployment on **Vercel** with a decoupled architecture:
-- **Frontend:** Static web assets served directly via global Edge CDN (`/frontend`).
+This project is pre-configured for deployment on **Vercel** with a decoupled, mobile-optimized architecture:
+- **Frontend & PWA:** Responsive static web assets served directly via global Edge CDN (`/frontend`), fully progressive web app (PWA) enabled with offline caching and mobile touch ergonomics.
 - **Backend REST API:** Node.js Serverless Functions (`/api/index.js` routing all `/api/v1/*` requests).
-- **Pitch Deck & Showcase:** Pre-rendered HTML5 presentation deck (`/pitch_deck`) and 3-minute video player (`/demo_showcase`).
 
 ---
 
@@ -15,10 +14,10 @@ This project is pre-configured for deployment on **Vercel** with a decoupled arc
                  │
                  ▼
   Vercel Global Edge Network (vercel.json)
-                 ├── Static Routes:
-                 │    ├── /               ──▶ /frontend/index.html
-                 │    ├── /pitch_deck     ──▶ /frontend/pitch_deck.html
-                 │    ├── /demo_showcase  ──▶ /frontend/demo_showcase.html
+                 ├── Static & PWA Assets:
+                 │    ├── /               ──▶ /frontend/index.html (Desktop & Mobile)
+                 │    ├── /manifest.json  ──▶ /frontend/manifest.json (PWA App Manifest)
+                 │    ├── /sw.js          ──▶ /frontend/sw.js (Service Worker Caching)
                  │    └── /*.css, /*.js   ──▶ /frontend/*
                  │
                  └── API Routes:
@@ -112,9 +111,9 @@ Once deployed, verify the endpoints on your Vercel domain (`https://<your-projec
 
 | Target Test | Endpoint URL | Expected Result |
 |:---|:---|:---|
-| **Main App** | `https://<domain>/` | Loads the SANAD bilingual web application. |
-| **Pitch Deck** | `https://<domain>/pitch_deck` | 16-Slide interactive presentation deck in 16:9 widescreen. |
-| **Demo Showcase** | `https://<domain>/demo_showcase` | 3-minute video player with Solfeggio soundscape. |
+| **Main App (Web & Mobile)** | `https://<domain>/` | Loads the SANAD bilingual web application with full responsive mobile support. |
+| **PWA Manifest** | `https://<domain>/manifest.json` | Web App Manifest for mobile installation on iOS & Android. |
+| **Service Worker** | `https://<domain>/sw.js` | Service Worker script for offline static asset caching. |
 | **Stepped-Care Tiers** | `https://<domain>/api/v1/stepped-care/tiers` | Returns HTTP 200 with 5 Abu Dhabi clinical tiers. |
 | **Assessment Evaluation** | `https://<domain>/api/v1/assessments/evaluate` | Evaluates PHQ-9/GAD-7 payloads and triggers closed-loop tracking. |
 | **Murshid AI Guide** | `https://<domain>/api/v1/murshid/chat` | Returns structured, non-diagnostic guidance in Arabic/English. |
@@ -131,11 +130,6 @@ Controls URL rewriting between static web views and serverless functions:
   "version": 2,
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/index.js" },
-    { "source": "/pitch_deck", "destination": "/frontend/pitch_deck.html" },
-    { "source": "/demo_showcase", "destination": "/frontend/demo_showcase.html" },
-    { "source": "/generate_video", "destination": "/frontend/generate_video.html" },
-    { "source": "/demo_video.webm", "destination": "/SANAD_Abu_Dhabi_Demo_Video.webm" },
-    { "source": "/SANAD_Abu_Dhabi_Demo_Video.webm", "destination": "/SANAD_Abu_Dhabi_Demo_Video.webm" },
     { "source": "/", "destination": "/frontend/index.html" },
     { "source": "/(.*)", "destination": "/frontend/$1" }
   ]
